@@ -1,0 +1,485 @@
+var baseUrl = "/service.jsp";
+var updateUrl = "http://localhost:8890/sparql";
+var DELIMIT_NODE = ";";
+var DELIMIT_IRI_START = "{";
+var DELIMIT_IRI_END = "}";
+var DELIMIT_EQ = "|";
+var DELIMIT_FOCUS = "?";
+var DELIMIT_REVERSE = "*";
+var DELIMIT_ALL_TEXT = "!";
+var DELIMIT_ONLY_TEXT = "$";
+var DELIMIT_UNION = "&&";
+var DELIMIT_ORDER_ASC = "@";
+
+function activateLocationBar(){
+	document.getElementById('path').disabled = true;
+	document.getElementById('path').focus();
+}
+
+function deactivateLocationBar(){
+	self.location = '#x';
+	document.getElementById('path').disabled = true;
+}
+
+//jQuery.ctrl = function(key, callback, args) {
+//    $(document).keydown(function(e) {
+//        if(!args) args=[]; // IE barks when args is null
+//        if(e.keyCode == key.charCodeAt(0) && e.ctrlKey) {
+//            callback.apply(this, args);
+//	        e.preventDefault();
+//	        e.stopPropagation();
+//            return false;
+//        }
+//    });
+//};
+//
+//jQuery.ctrl('S', function() {
+//    alert("Saved");
+//    return false;
+//});
+
+function editChar(e){
+	document.getElementById('v').disabled = false;
+	document.getElementById('v').focus();
+	document.getElementById('v').value += String.fromCharCode(e.charCode);	
+	document.getElementById('vLabel').value += String.fromCharCode(e.charCode);	
+}
+
+
+function addChar(e){
+//	if (!e) var e = window.event;
+	// ALPHANUMERIC
+	if(e.keyCode != 8 && e.keyCode != 39 && e.keyCode != 37 && document.getElementById('path').value.length > 0) doSetCaretPosition(document.getElementById('path'), document.getElementById('path').value.length);
+	if(e.charCode){
+		if(document.getElementById('locationBarPane').style.display == 'none') animatedcollapse.show('locationBarPane');
+		document.getElementById('path').value += String.fromCharCode(e.charCode);
+		//document.getElementById('path').focus();
+	}
+	else if (e.keyCode) {
+		// UP ARROW
+		if (e.keyCode == 38) {
+			animatedcollapse.hide('tripleBarPane');
+//			var p = document.getElementById("path");
+//			var s = document.getElementById("s");
+//			p.value = ((s.value.length <= 0) ? "anything": s.value) + DELIMIT_NODE;
+//			doSetCaretPosition(p, p.value.length);
+//			var cpos = doGetCaretPosition(p);
+//			if (cpos == p.value.length) {
+//				if(cpos == 0) p.value = document.getElementById("s");
+//				p.value = p.value + DELIMIT_NODE;
+//				doSetCaretPosition(p, p.value.length);
+//			}
+		}
+		// LEFT ARROW
+		else if (e.keyCode == 37) {
+			
+			if(document.getElementById('locationBarPane').style.display == 'none') animatedcollapse.show('tripleBarPane');
+		}
+		else {
+			if(document.getElementById('locationBarPane').style.display == 'none') animatedcollapse.show('locationBarPane');
+			if (e.keyCode == 46) {
+				if(document.getElementById('path').value && document.getElementById('path').value.length > 0) {
+					document.getElementById('path').value = document.getElementById('path').value.substring(0, document.getElementById('path').value.length - 1); 
+				}
+			}
+			// ENTER
+			else if (e.keyCode == 13) {
+				var p = document.getElementById('path').value;
+				
+				if(!p){
+					animatedcollapse.hide('locationBarPane');
+					return;
+				}
+				
+				var q = "limit=25&offset=0&viewType=list";
+				
+				var searchSuffix = getSearchSuffix();
+				if(searchSuffix){
+					p += searchSuffix;
+//					hideSearchIn();
+					document.getElementById('path').value = p;
+					
+					if(document.getElementById('searchTarget').value){
+						q += "&tid=" + document.getElementById('searchTarget').value + "&reload=true";
+					}
+				}
+				
+				if(startsWith(p, "lup")){
+					p = p.substring(3); // replace the 'me' with the user's webid
+					p = jQuery.trim(p);
+					p = p + DELIMIT_NODE + "rdf:type" + DELIMIT_EQ + "rdf:Property" + DELIMIT_NODE + "skos:definition";
+					// replace the path value
+					document.getElementById('path').value = p;
+				}
+				else if(startsWith(p, "luc")){
+					p = p.substring(3); // replace the 'me' with the user's webid
+					p = jQuery.trim(p);
+					p = p + DELIMIT_NODE + "rdf:type" + DELIMIT_EQ + "rdf:Class" + DELIMIT_NODE + "skos:definition";
+					// replace the path value
+					document.getElementById('path').value = p;
+				}
+				else if(startsWith(p, "lp")){
+					p = p.substring(2); // replace the 'me' with the user's webid
+					p = jQuery.trim(p);
+					p = p + DELIMIT_NODE + "rdf:type" + DELIMIT_EQ + "rdf:Property" + DELIMIT_NODE + "skos:definition";
+					// replace the path value
+					document.getElementById('path').value = p;
+				}
+				else if(startsWith(p, "lc")){
+					p = p.substring(2); // replace the 'me' with the user's webid
+					p = jQuery.trim(p);
+					p = p + DELIMIT_NODE + "rdf:type" + DELIMIT_EQ + "rdf:Class" + DELIMIT_NODE + "skos:definition";
+					// replace the path value
+					document.getElementById('path').value = p;
+				}
+				else if(startsWith(p, "dp")){
+					p = p.substring(2); // replace the 'me' with the user's webid
+					p = jQuery.trim(p);
+					p = p + DELIMIT_NODE + "rdf:type" + DELIMIT_EQ + "rdf:Property" + DELIMIT_NODE + "rdfs:comment";
+					// replace the path value
+					document.getElementById('path').value = p;
+				}
+				else if(startsWith(p, "dc")){
+					p = p.substring(2); // replace the 'me' with the user's webid
+					p = jQuery.trim(p);
+					p = p + DELIMIT_NODE + "rdf:type" + DELIMIT_EQ + "rdf:Class" + DELIMIT_NODE + "rdfs:comment";
+					// replace the path value
+					document.getElementById('path').value = p;
+				}
+				else if(startsWith(p, "dn")){
+					p = p.substring(2); // replace the 'me' with the user's webid
+					p = jQuery.trim(p);
+					p = p + DELIMIT_NODE + "rdf:type" + DELIMIT_EQ + "wn2:NounSynset" + DELIMIT_NODE + "wn2:gloss";
+					// replace the path value
+					document.getElementById('path').value = p;
+				}
+				else if(startsWith(p, "dv")){
+					p = p.substring(2); // replace the 'me' with the user's webid
+					p = jQuery.trim(p);
+					p = p + DELIMIT_NODE + "rdf:type" + DELIMIT_EQ + "wn2:VerbSynset" + DELIMIT_NODE + "wn2:gloss";
+					// replace the path value
+					document.getElementById('path').value = p;
+				}
+				// TODO attempt to sanitize the youtube input
+//				document.getElementById('path').value = sanitize(escape(document.getElementById('path').value));
+				if(document.getElementById('path').value.indexOf("youtube.com") >= 0&& document.getElementById('path').value.indexOf("&") >= 0){
+					document.getElementById('path').value = document.getElementById('path').value.substring(0, document.getElementById('path').value.indexOf("&"));
+				}
+				
+				var params = getFormParams();
+				// remove text from input box after pulling it into params, but before making the ajax call
+				// this allows user to continue typing without having their text erased after the ajax call is complete
+				document.getElementById('path').value = "";
+				jQuery.get(baseUrl + "?" + q, params, loadView, 'xml');
+				animatedcollapse.hide('locationBarPane');
+			}
+			// RIGHT ARROW
+			else if (e.keyCode == 39) {
+				var p = document.getElementById("path");
+				var cpos = doGetCaretPosition(p);
+				if (cpos == p.value.length) {
+					if(cpos == 0) {
+						if(document.getElementById('s').value){
+							p.value = document.getElementById('s').value;
+						}
+						else {
+							p.value = "anything";
+						}
+					}
+					p.value = p.value + DELIMIT_NODE;
+					doSetCaretPosition(p, p.value.length);
+				}
+			}
+			
+			else if(!document.getElementById("path").value && e.keyCode >= 48 && e.keyCode <= 90){
+				var code;
+				if (e.keyCode) code = e.keyCode;
+				else if (e.which) code = e.which;
+				var character = String.fromCharCode(code);
+				document.getElementById('path').value = character.toLowerCase();
+				//doSetCaretPosition(document.getElementById('path'), document.getElementById('path').value.length);
+			}
+			// numbers and alpha chars
+//			else if(e.keyCode >= 48 && e.keyCode <= 90){
+//				animatedcollapse.show('locationBarPane');
+//				document.getElementById('path').value += String.fromCharCode(e.keyCode);
+//				//document.getElementById('path').focus();
+//			}
+		} // else if not UP or DOWN arrow
+
+	} // else if keycode
+	// CTRL + S
+//	if(e.which == 83 && e.ctrlKey){
+//		e.keyCode = 0;
+//		alert('here it is');
+//		return false;
+//	}
+}
+
+function getView(e) {
+	if (!dock)
+		dock = new OAT.Dock("canvas", 3);
+	if (e.keyCode == 13) {
+		jQuery.get(baseUrl + "?limit=25&offset=0&viewType=list", getFormParams(), loadView, 'xml');
+		document.getElementById('path').value = "";
+	}
+	if (e.keyCode == 39) {
+		var p = document.getElementById("path");
+		var cpos = doGetCaretPosition(p);
+		if (cpos == p.value.length) {
+			if(cpos == 0) p.value = "anything";
+			p.value = p.value + DELIMIT_NODE;
+			doSetCaretPosition(p, p.value.length);
+		}
+	}
+}
+
+// passing null for targetId causes a new module to launch
+function getViewForLink(sourceModuleId, targetId, path, viewType, shortName, datatype, maximize) {
+	path = escape(sanitize(path)); // after displaying the path, be sure to encode it
+	// here and decode it on server side, the #
+	// character is not sent to the server or is
+	// stripped by the server one, do not use encodeURL,
+	// it doesnt encode #
+	// if pinned, then do not launch a new module, instead, only replace the subject of each module, then reload each module
+	if(pinned){
+//		if(sourceModuleId) {
+//			// jQuery doesn't like unescaped dots in the selector, but don't escape and mutate sourceModuleId, because a match below
+//			if(jQuery("#"+sourceModuleId.replace(".", "\\.")).children().children(".view_buttons").children(".pin") && jQuery("#"+sourceModuleId.replace(".", "\\.").replace(".", "\\.")).children().children(".view_buttons").children(".pin").length > 0) jQuery("#"+sourceModuleId.replace(".", "\\.")).children().children(".view_buttons").children(".pin")[0].innerHTML = "pin";
+//			else if(jQuery("#"+sourceModuleId.replace(".", "\\.")).children(".view_buttons").children(".pin") && jQuery("#"+sourceModuleId.replace(".", "\\.").replace(".", "\\.")).children(".view_buttons").children(".pin").length > 0) jQuery("#"+sourceModuleId.replace(".", "\\.")).children(".view_buttons").children(".pin")[0].innerHTML = "pin";
+//		}
+		pinned = false; // TODO can;t leave pinned on or else ajax calls will come here, need to fix this
+		jQuery("div.dock_window").each(function() { 
+			var newTargetPath, newTargetId;
+				// find the content pane for the dock, there should be only one div under it, that div has the target id
+				newTargetId = jQuery(this).children("div.dock_content").children().attr("id");
+				// don't filter the source module unless its the only one
+			if(jQuery("div.dock_window").length == 1 || (newTargetId != sourceModuleId)){
+				
+				
+	//TODO  leave the view type of the target module as is, need a better way than this, if the button module structure changes, this breaks
+				var vtype = jQuery(this).children("div.dock_content").children().children(".view_buttons").children(".selected")[0].innerHTML;
+				if(jQuery("div.dock_window").length == 1) vtype = "list"; // if only one module is open, then return to the main results list after selection (i.e. mimic old razorbase behavior)
+				else if(vtype == LABEL_RESULTS) vtype = "list";
+				else if(vtype == LABEL_ABOUT) vtype = "properties";
+				else if(vtype == LABEL_GROUPS) vtype = "classes";
+				else if(vtype == LABEL_MATCHES) vtype = "properties-in";
+				
+				
+				// find the header of the module and grab the title, which is the path
+			newTargetPath = jQuery(this).children("div.dock_header").children()[2].innerHTML; // grab all text in the header
+//			alert("newPath = " + newTargetPath);
+				// replace the prefix bound to the path of this module for the subject just clicked
+				// the prefix is the string from index 0 until the beginning of the first node
+				var indexOfMarkers = newTargetPath.indexOf(DELIMIT_NODE);
+				if(indexOfMarkers > 0) {
+					newTargetPath = newTargetPath.substring(indexOfMarkers+1); // remove the old prefix from the path
+					newTargetPath = path + DELIMIT_NODE + newTargetPath; // prepend the new subject (the link that was clicked on to generate this method call)
+					
+					// the focus may have been at the root, in which case, also preappend the DELIMIT_FOCUS to the new path
+					// but never mutate the sourceModuleId, since a match is performed above during this loop
+					var smid = "#"+sourceModuleId.replace(".", "\\.");
+					if(jQuery(smid).length > 0){
+						var sourceModuleTitle = jQuery(smid).parent().siblings("div.dock_header").children()[2].innerHTML;
+						if((sourceModuleTitle.indexOf(DELIMIT_FOCUS) >= 0 && (sourceModuleTitle.indexOf(DELIMIT_NODE) < 0) || (sourceModuleTitle.indexOf(DELIMIT_FOCUS) >=0 && sourceModuleTitle.indexOf(DELIMIT_FOCUS) < sourceModuleTitle.indexOf(DELIMIT_NODE)))){
+							newTargetPath = DELIMIT_FOCUS + newTargetPath;
+						}
+					}
+				}
+				else newTargetPath =  path; // if no suffix, then only the subject is present... replace the entire subject
+				
+				// here and decode it on server side, the #
+				// character is not sent to the server or is
+				// stripped by the server one, do not use encodeURL,
+				// it doesnt encode #
+//							alert("newTargetPath = " + newTargetPath);
+							jQuery(this).children("div.dock_header").children()[2].innerHTML = unescape(desanitize(newTargetPath)); // update the title of the module
+				reloadView(baseUrl + "?tid="+newTargetId+"&reload=true&viewType=" + vtype + "&path=" + newTargetPath + "&offset=0&limit=25");
+			}
+		});
+		return;
+	}
+	
+	if(!maximize) maximize = '';
+	else maximize = "&maximize=" + maximize;
+	jQuery.get(baseUrl + "?smid="+sourceModuleId+"&tid="+targetId+"&limit=25&offset=0&viewType=" + viewType + maximize + "&datatype=" + sanitize(datatype) + "&path=" + sanitize(path), {}, loadView, 'xml');
+}
+
+function reloadView(url) {
+	jQuery.get(sanitize(url), {}, loadView, 'xml');
+}
+
+
+function getFormParams() {
+	var theForm = document.getElementsByTagName('input');
+	var params = {};
+
+	var str = "";
+
+	for (i = 0; i < theForm.length; i++) {
+		str += theForm[i].name + " = " + theForm[i].value + "; ";
+		var fval = theForm[i].value;
+		params[theForm[i].name] = fval;
+	}
+	return params;
+}
+
+function createId() {
+	return Math.random();
+}
+
+function load_xml_content_string(xmlObject) {
+	if (window.ActiveXObject) {
+		// for IE
+		// xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+		// xmlDoc.async="false";
+		// xmlDoc.loadXML(xmlData);
+		// var xmlString =
+		return xmlObject.xml;
+	}
+	else
+		if (document.implementation && document.implementation.createDocument) {
+			// for Mozila
+			//parser=new DOMParser();
+			//xmlDoc=parser.parseFromString(xmlData,"text/xml");
+			return (new XMLSerializer()).serializeToString(xmlObject);
+		}
+}
+
+function doGetCaretPosition(oField) {
+
+	// Initialize
+	var iCaretPos = 0;
+
+	// IE Support
+	if (document.selection) {
+
+		// Set focus on the element
+		oField.focus();
+
+		// To get cursor position, get empty selection range
+		var oSel = document.selection.createRange();
+
+		// Move selection start to 0 position
+		oSel.moveStart('character', -oField.value.length);
+
+		// The caret position is selection length
+		iCaretPos = oSel.text.length;
+	}
+
+	// Firefox support
+	else
+		if (oField.selectionStart || oField.selectionStart == '0')
+			iCaretPos = oField.selectionStart;
+
+	// Return results
+	return (iCaretPos);
+}
+
+/*
+ * * Sets the caret (cursor) position of the specified text field. * Valid
+ * positions are 0-oField.length.
+ */
+function doSetCaretPosition(oField, iCaretPos) {
+
+	// IE Support
+	if (document.selection) {
+
+		// Set focus on the element
+		oField.focus();
+
+		// Create empty selection range
+		var oSel = document.selection.createRange();
+
+		// Move selection start and end to 0 position
+		oSel.moveStart('character', -oField.value.length);
+
+		// Move selection start and end to desired position
+		oSel.moveStart('character', iCaretPos);
+		oSel.moveEnd('character', 0);
+		oSel.select();
+	}
+
+	// Firefox support
+	else
+		if (oField.selectionStart || oField.selectionStart == '0') {
+			oField.selectionStart = iCaretPos;
+			oField.selectionEnd = iCaretPos;
+			oField.focus();
+		}
+}
+
+/* any method calling jQuery.get() should sanitize the url first so that paths don't get stripped of their # */
+function sanitize(path){	
+	while(path && (path.indexOf("\'") >= 0 || path.indexOf("#") >= 0)){
+		path = path.replace("\'", "---___apos___---");
+		path = path.replace("#", "---___hasg___---");
+	}
+	return path;
+}
+
+function desanitize(path){
+	while(path.indexOf("---___hasg___---") >= 0 || path.indexOf("---___apos___---") >= 0){
+		path = path.replace("---___apos___---", "\'");
+		path = path.replace("---___hasg___---", "#");
+	}
+	return path;
+}
+
+function parseLabel(label){
+	label = desanitize(label);
+	label = unescape(label);
+	label = label.replace(/([A-Z])/g, ' $1');
+	if(label.indexOf("#") >= 0) label = label.substring(label.lastIndexOf("#") + 1);
+	if(label.indexOf("/") >= 0) label = label.substring(label.lastIndexOf("/") + 1);							
+	if(label.indexOf(":") >= 0) label = label.substring(label.lastIndexOf(":") + 1);							
+	if(label.indexOf("has") == 0) label = label.substring(3);							
+	while(label.indexOf("_") >= 0) label = label.replace("_", " ");
+	while(label.indexOf("-") >= 0) label = label.replace("-", " ");
+	while(label.indexOf(DELIMIT_IRI_START) >= 0) label = label.replace(DELIMIT_IRI_START, "");
+	while(label.indexOf(DELIMIT_IRI_END) >= 0) label = label.replace(DELIMIT_IRI_END, "");
+	return label;
+}
+
+//function getResult(path){
+//	jQuery(data).find("[nodeName=fct:row]").each(function() {
+//
+////		if(row_ct == 0){
+////			viewContent.parent().children("div.view_buttons").children(".result_index_loading")[0].innerHTML = "loading...";
+////		}
+////		viewContent.parent().children("div.view_buttons").children(".result_index_loading")[0].innerHTML = offset + " - " + row_ct + " of " + limit;
+//		
+//		var shortform, label, iri, datatype;
+//		var i = 0;
+//		// gather the row data
+//		jQuery(this).find("[nodeName=fct:column]").each(function() {
+//			if (i == 0) {
+//				shortform = jQuery(this).attr("shortform");
+//				datatype = jQuery(this).attr("datatype");
+//				iri = jQuery(this).text();
+//				// escape any ' char in the path
+//				iri = sanitize(iri);
+//			}
+//			else
+//				if (i == 1) {
+//					label = jQuery(this).text();
+//					if (!label ){
+//						if(datatype != "url"){
+//							label = iri; // sometimes the object is a string
+//							// literal, not an iri
+//						}
+//						else {
+//							label = shortform;
+//							if(label.indexOf("#") >= 0) label = label.substring(label.lastIndexOf("#") + 1);
+//							if(label.indexOf("/") >= 0) label = label.substring(label.lastIndexOf("/") + 1);							
+//							if(label.indexOf("has") == 0) label = label.substring(3);							
+//							label = label.replace("_", " ");
+//						}
+//					}
+//				}
+//
+//			i++;
+//		}); // each column
+//	}); // each row
+//	
+//}

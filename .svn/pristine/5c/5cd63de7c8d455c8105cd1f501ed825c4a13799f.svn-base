@@ -1,0 +1,230 @@
+package org.apache.jsp;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.jsp.*;
+
+public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
+    implements org.apache.jasper.runtime.JspSourceDependent {
+
+  private static java.util.List _jspx_dependants;
+
+  public Object getDependants() {
+    return _jspx_dependants;
+  }
+
+  public void _jspService(HttpServletRequest request, HttpServletResponse response)
+        throws java.io.IOException, ServletException {
+
+    JspFactory _jspxFactory = null;
+    PageContext pageContext = null;
+    HttpSession session = null;
+    ServletContext application = null;
+    ServletConfig config = null;
+    JspWriter out = null;
+    Object page = this;
+    JspWriter _jspx_out = null;
+    PageContext _jspx_page_context = null;
+
+
+    try {
+      _jspxFactory = JspFactory.getDefaultFactory();
+      response.setContentType("text/html");
+      pageContext = _jspxFactory.getPageContext(this, request, response,
+      			null, true, 8192, true);
+      _jspx_page_context = pageContext;
+      application = pageContext.getServletContext();
+      config = pageContext.getServletConfig();
+      session = pageContext.getSession();
+      out = pageContext.getOut();
+      _jspx_out = out;
+
+      out.write("\r\n");
+      out.write("<!DOCTYPE html \"-//W3C//DTD XHTML 1.0 Strict//EN\" \r\n");
+      out.write("  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\"> \r\n");
+      out.write("\r\n");
+      out.write("<html>\r\n");
+      out.write("<title>qanvas (prototype)</title>\r\n");
+      out.write("<head>\r\n");
+      out.write("\t<link type=\"text/css\" href=\"css/main.css\" rel=\"stylesheet\"/> \r\n");
+      out.write("\t<script type=\"text/javascript\" src=\"js/jquery.js\"></script>\r\n");
+      out.write("\t<script type=\"text/javascript\" src=\"js/main.js\"></script>\r\n");
+      out.write("\t<script type=\"text/javascript\" src=\"js/view.js\"></script>\r\n");
+      out.write("\t<script type=\"text/javascript\" src=\"js/me.js\"></script>\r\n");
+      out.write("\t<script type=\"text/javascript\" src=\"js/date.format.js\"></script>\r\n");
+      out.write("\r\n");
+      out.write("\t<!-- load calendar -->\r\n");
+      out.write("\t<link rel='stylesheet' type='text/css' href='fullcalendar/fullcalendar.css' />\r\n");
+      out.write("\t<script type='text/javascript' src='fullcalendar/fullcalendar.js'></script>\r\n");
+      out.write("\r\n");
+      out.write("\t<!-- load pretty date -->\r\n");
+      out.write("\t<script type=\"text/javascript\" src=\"js/humandates.js\"></script>\r\n");
+      out.write("\t\r\n");
+      out.write("\t<!-- load photo gallery -->\r\n");
+      out.write("\t<script src=\"galleria/galleria-1.2.4.js\"></script>\r\n");
+      out.write("\t<script src=\"galleria/galleria-1.2.4.min.js\"></script>\r\n");
+      out.write("<!--\t<script src=\"galleria/themes/classic/galleria.classic.min.js\"></script>\r\n");
+      out.write("\t<link rel=\"stylesheet\" href=\"galleria/themes/galleria.classic.css\">-->\r\n");
+      out.write("\t\r\n");
+      out.write("\t<!-- load div slide to close animator -->\r\n");
+      out.write("\t\t<script type='text/javascript' src='js/jquery.maps.js'></script>\t</head> \r\n");
+      out.write("<!-- \t<script src=\"https://maps.google.com/maps?file=api&v=2&key=ABQIAAAAvbpvFpgiK-X0_ZSkXIb_fhSoRcdydWEi6q5FOFHuyLS2Q5O86RRL2I7-WT0GcgY5e1SpCgsWurPF4w\" type=\"text/javascript\"></script>  -->\r\n");
+      out.write("\r\n");
+      out.write("\r\n");
+      out.write("\t<!-- load google books -->\r\n");
+      out.write("    <script type=\"text/javascript\" src=\"https://www.google.com/jsapi?key=ABQIAAAArud3wgC2HyiVBE7ZoZa2gRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQyFk3HStKn4xF3rXUR9ROQ4aBwaA\"></script>\r\n");
+      out.write("\r\n");
+      out.write("\t<!--<script type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js\"></script>-->\r\n");
+      out.write("\t<script type=\"text/javascript\" src=\"js/animatedcollapse.js\">\r\n");
+      out.write("\t\r\n");
+      out.write("\t\t/***********************************************\r\n");
+      out.write("\t\t* Animated Collapsible DIV v2.4- (c) Dynamic Drive DHTML code library (www.dynamicdrive.com)\r\n");
+      out.write("\t\t* This notice MUST stay intact for legal use\r\n");
+      out.write("\t\t* Visit Dynamic Drive at http://www.dynamicdrive.com/ for this script and 100s more\r\n");
+      out.write("\t\t***********************************************/\r\n");
+      out.write("\t\r\n");
+      out.write("\t</script>\r\n");
+      out.write("\t\r\n");
+      out.write("\t<script type=\"text/javascript\">\r\n");
+      out.write("    \t\tgoogle.load(\"books\", \"0\");\r\n");
+      out.write("\t\tvar featureList = [\"dock\",\"panelbar\", \"ghostdrag\", \"quickedit\"];\r\n");
+      out.write("\t\tfunction init(){\r\n");
+      out.write("\t\t\tjQuery(document).ready(function(jq){\r\n");
+      out.write("   \t\t\t\tjq(); // this is the jQuery reference!\r\n");
+      out.write("\t\t\t\tdocument.getElementById('locationBarPane').style.display = 'none';\r\n");
+      out.write("\t\t\t\tdocument.getElementById('tripleBarPane').style.display = 'none';\r\n");
+      out.write("\t\t\t});\r\n");
+      out.write("\t\t\tvar text = document.getElementById(\"vLabel\");\r\n");
+      out.write("\t\t\t//text.innerHTML = \"hello\";\r\n");
+      out.write("\t\t\tOAT.QuickEdit.assign(text, OAT.QuickEdit.STRING);\r\n");
+      out.write("\t\t\t\r\n");
+      out.write("\t\t\t\tvar q = \"limit=25&offset=0&viewType=list\";\r\n");
+      out.write("\t\t\t\tdocument.getElementById('path').value = \"me\";\r\n");
+      out.write("\t\t\t\tvar params = getFormParams();\r\n");
+      out.write("\t\t\t\t// remove text from input box after pulling it into params, but before making the ajax call\r\n");
+      out.write("\t\t\t\t// this allows user to continue typing without having their text erased after the ajax call is complete\r\n");
+      out.write("\t\t\t\tdocument.getElementById('path').value = \"\";\r\n");
+      out.write("\t\t\t\tjQuery.get(baseUrl + \"?\" + q, params, loadView, 'xml');\r\n");
+      out.write("\t\t}\r\n");
+      out.write("\t</script>\r\n");
+      out.write("\t<script type=\"text/javascript\" src=\"js/oat/loader.js\"></script>\r\n");
+      out.write("\t\r\n");
+      out.write("\t\r\n");
+      out.write("\t\r\n");
+      out.write("\t<script type=\"text/javascript\">\r\n");
+      out.write("\t\r\n");
+      out.write("\t\tanimatedcollapse.addDiv('locationBarPane', 'fade=0,speed=550');\r\n");
+      out.write("\t\tanimatedcollapse.addDiv('tripleBarPane', 'fade=0,speed=550');\r\n");
+      out.write("\t\t\r\n");
+      out.write("\t\t//------------------------ EXAMPLES -----------------------//\r\n");
+      out.write("\t\t//animatedcollapse.addDiv('kelly', 'fade=1,height=100px');\r\n");
+      out.write("\t\t//animatedcollapse.addDiv('michael', 'fade=1,height=120px');\r\n");
+      out.write("\t\t\r\n");
+      out.write("\t\t//animatedcollapse.addDiv('cat', 'fade=0,speed=400,group=pets');\r\n");
+      out.write("\t\t//animatedcollapse.addDiv('dog', 'fade=0,speed=400,group=pets,persist=1,hide=1');\r\n");
+      out.write("\t\t//animatedcollapse.addDiv('rabbit', 'fade=0,speed=400,group=pets,hide=1');\r\n");
+      out.write("\t\t\r\n");
+      out.write("\t\tanimatedcollapse.ontoggle=function($, divobj, state){ //fires each time a DIV is expanded/contracted\r\n");
+      out.write("\t\t\t//$: Access to jQuery\r\n");
+      out.write("\t\t\t//divobj: DOM reference to DIV being expanded/ collapsed. Use \"divobj.id\" to get its ID\r\n");
+      out.write("\t\t\t//state: \"block\" or \"none\", depending on state\r\n");
+      out.write("\t\t}\r\n");
+      out.write("\t\t\r\n");
+      out.write("\t\tanimatedcollapse.init();\r\n");
+      out.write("\t\t//document.getElementById('tripleBarPane').style.visability = 'hidden';\r\n");
+      out.write("\t\r\n");
+      out.write("\t</script>\r\n");
+      out.write("\r\n");
+      out.write("</head>\r\n");
+      out.write("\r\n");
+      out.write("<!-- TODO: this needs to go in a .js file -->\r\n");
+      out.write("<!-- 'just type' feature requires the cursor to be hidden; only way is to disable to text field -->\r\n");
+      out.write("<!-- browsers still keyboard stroke events like backspace and space, unless you give a text field focus; so when a key is held down -->\r\n");
+      out.write("<!-- give the locationbar the focus, then append the letter, then disable it again -->\r\n");
+      out.write("<!-- also, give the body back the focus, can't set focus on a div, so you have to scroll to the body element to give it focus -->\r\n");
+      out.write("\t\t\r\n");
+      out.write("\t<body id=\"x\" onkeydown=\"javascript:\r\n");
+      out.write("\tif(document.getElementById('tripleBarPane').style.display == 'none'){\r\n");
+      out.write("\t\tif(document.getElementById('path').disabled == true){\r\n");
+      out.write("\t\t\tdocument.getElementById('path').disabled = false;\r\n");
+      out.write("\t\t\tdocument.getElementById('path').focus();\r\n");
+      out.write("\t\t}\r\n");
+      out.write("\t\taddChar(event);\r\n");
+      out.write("\t}\r\n");
+      out.write("\telse{\r\n");
+      out.write("\t\tif (event.keyCode == 38) {\r\n");
+      out.write("\t\t\tanimatedcollapse.hide('tripleBarPane');\r\n");
+      out.write("\t\t}\r\n");
+      out.write("\t}\" \r\n");
+      out.write("\t\r\n");
+      out.write("\tonkeyup=\"javascript:\r\n");
+      out.write("\tif(document.getElementById('tripleBarPane').style.display == 'none'){\r\n");
+      out.write("\t\tself.location = '#x';\r\n");
+      out.write("\t\tdocument.getElementById('path').disabled = true;\r\n");
+      out.write("\t}\t\r\n");
+      out.write("\tif(document.getElementById('tripleBarPane').getElementsByTagName('input').length == 8){\r\n");
+      out.write("\t\tdocument.getElementById('v').value = jQuery('#tripleBarPane').children('input')[0].value;\r\n");
+      out.write("\t}\">\r\n");
+      out.write("\t\r\n");
+      out.write("\t\r\n");
+      out.write("\t\r\n");
+      out.write("<!--<script type=\"text/javascript\"> \r\n");
+      out.write(" \r\n");
+      out.write("jQuery(document).ready(function() {\r\n");
+      out.write("\tjQuery(\"#map1\").googleMap(37, -122, 5, {\r\n");
+      out.write("\t\tcontrols: [\"GSmallMapControl\", \"GMapTypeControl\"],\r\n");
+      out.write("\t\tmarkers: jQuery(\".geo\")\r\n");
+      out.write("\t});\r\n");
+      out.write("\t// Example to access the map object is below:\r\n");
+      out.write("\t// jQuery.googleMap.maps[\"map1\"].setMapType(G_SATELLITE_TYPE);\r\n");
+      out.write("});\r\n");
+      out.write(" \r\n");
+      out.write("</script> <div id=\"map1\" style=\"width: 300px; height: 300px;\"></div> \r\n");
+      out.write(" \r\n");
+      out.write("<div class=\"geo\" title=\"Foo\"> \r\n");
+      out.write("<abbr class=\"latitude\" title=\"37.408183\">N 37° 24.491</abbr> \r\n");
+      out.write("<abbr class=\"longitude\" title=\"-122.13855\">W 122° 08.313</abbr> \r\n");
+      out.write("</div> \r\n");
+      out.write(" \r\n");
+      out.write("<div class=\"geo\" title=\"Bar\"> \r\n");
+      out.write("<abbr class=\"latitude\" title=\"36.408183\">N 36° 24.491</abbr> \r\n");
+      out.write("<abbr class=\"longitude\" title=\"-121.13855\">W 121° 08.313</abbr> \r\n");
+      out.write("</div></div>\r\n");
+      out.write("-->\r\n");
+      out.write("\r\n");
+      out.write("\t\t<!-- events are attached to the locationBar input field in the addChar() method -->\r\n");
+      out.write("\t\t<div class=\"searchIn\" id=\"searchIn\" style=\"display:none;\"></div>\r\n");
+      out.write("\t\t<div id=\"locationBarPane\"  style=\"display:none;\"><input name=\"path\"  onmouseover=\"javascript:cursor='auto';\" id=\"path\" type=\"text\" class=\"locationBar\" disabled=\"true\" autocomplete=\"off\"/></div>\r\n");
+      out.write("\t\t<div id=\"tripleBarPane\" style=\"display:none;\">\r\n");
+      out.write("\t\t\t<div class=\"searchIn\" id=\"sLabel\" onmouseover=\"javascript:this.style.cursor='pointer';\" onclick=\"javascript:swapSV();\">me</div>\r\n");
+      out.write("\t\t\t<div class=\"searchIn\" id=\"pLabel\" onmouseover=\"javascript:this.style.cursor='pointer';\" onclick=\"javascript:swapSV()\"></div>\r\n");
+      out.write("\t\t\t<div class=\"tripleBarValue\" id=\"vLabel\" onmouseover=\"javascript:this.style.cursor='pointer';\"></div>\r\n");
+      out.write("\t\t\t<span title=\"save statement (ctrl+s)\" class=\"tripleBarAction\" onmouseover=\"javascript:this.style.cursor='pointer';\" onclick=\"javascript:saveStatement()\">save</span>\r\n");
+      out.write("<!--\t\t\t<span title=\"swap subject and value\" class=\"tripleBarAction\" onmouseover=\"javascript:this.style.cursor='pointer';\" onclick=\"javascript:swapSV()\">swap</span> -->\r\n");
+      out.write("\t\t\t<span title=\"create something\" class=\"tripleBarAction\" onmouseover=\"javascript:this.style.cursor='pointer';\" onclick=\"javascript:doCreate();\">create</span>\r\n");
+      out.write("\t\t\t<span title=\"create something\" class=\"tripleBarAction\" onmouseover=\"javascript:this.style.cursor='pointer';\" onclick=\"javascript:var v = DELIMIT_IRI_START+document.getElementById('v').value+DELIMIT_IRI_END;doBookmark(v);\">bookmark</span>\r\n");
+      out.write("\t\t\t<span title=\"create something\" class=\"tripleBarAction\" onmouseover=\"javascript:this.style.cursor='pointer';\" onclick=\"javascript:var v = document.getElementById('v').value;doCreateNote(v);\">write</span>\r\n");
+      out.write("\t\t\t<input type=\"hidden\" name=\"s\" id=\"s\" value=\"me\"/>\r\n");
+      out.write("\t\t\t<input type=\"hidden\" name=\"p\" id=\"p\"/>\r\n");
+      out.write("\t\t\t<input type=\"hidden\" name=\"v\" id=\"v\"/>\r\n");
+      out.write("\t\t\t<input type=\"hidden\" name=\"r\" id=\"r\"/>\r\n");
+      out.write("\t\t\t<input type=\"hidden\" name=\"searchSuffix\" id=\"searchSuffix\"/>\r\n");
+      out.write("\t\t\t<input type=\"hidden\" name=\"searchTarget\" id=\"searchTarget\"/>\r\n");
+      out.write("\t\t\t<input type=\"hidden\" name=\"webid\" id=\"webid\" value=\"http://semanticweb.org/id/Sherman_Monroe\"/>\r\n");
+      out.write("\t\t</div>\r\n");
+      out.write("\t\t<div id = \"canvas\">\r\n");
+      out.write("\t\t</div>\r\n");
+      out.write("\t</body>\r\n");
+      out.write("</html>");
+    } catch (Throwable t) {
+      if (!(t instanceof SkipPageException)){
+        out = _jspx_out;
+        if (out != null && out.getBufferSize() != 0)
+          out.clearBuffer();
+        if (_jspx_page_context != null) _jspx_page_context.handlePageException(t);
+      }
+    } finally {
+      if (_jspxFactory != null) _jspxFactory.releasePageContext(_jspx_page_context);
+    }
+  }
+}
