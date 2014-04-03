@@ -1,5 +1,5 @@
 var baseUrl = "/q/service.jsp";
-var updateUrl = "http://localhost:8890/sparql";
+var updateUrl = "http://myopenlink.net/sparql";
 var DELIMIT_NODE = ";";
 var DELIMIT_IRI_START = "{";
 var DELIMIT_IRI_END = "}";

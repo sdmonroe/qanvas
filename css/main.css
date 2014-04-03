@@ -6,8 +6,9 @@ body {
 	color:#333;
 	
 	/*background: #52616F;*/
-	background-color:#3F4C6B;
-	background-image:url(/img/bg.jpg);
+	background-color:white;
+	/*background-color:#3F4C6B;*/
+/*	background-image:url(/q/img/bg.jpg);*/
 	padding:0em 0em;
 	text-align:left;
 	font-size:12pt;
@@ -45,8 +46,8 @@ font-family: verdana,helvetica,arial,sans-serif;
 	width:100%;
 	padding:6px 6px;
 	cursor:none;
-	background-color:#6495ED;/**/
-	color:white;
+	background-color:white; /*#6495ED;*//**/
+	color:gray;
 	border:0px solid transparent;
 	font-family:Lucida Sans Unicode, Lucida Grande;
 	font-size:16pt;

@@ -24,7 +24,7 @@ import com.monrai.cypher.util.text.Substituter;
  * 
  * examples of paths:
  * <ul>
- * <li>!this is raw text linked to the subject|{ggg://bind.uri.value.of.subject};a:property;{ggg://a.uri.property.com}|{the:boundValueofTheProperty};*the:inversePropertyToMatch</li>
+ * <li>!this is raw text linked to the subject|{ggg://bind.uri.value.of.subject}; a:property;{ggg://a.uri.property.com }|{the:boundValueofTheProperty};*the:inversePropertyToMatch</li>
  * <li>!anything = match any string of characters to any field</li>
  * <li>anything = match any string of charters to the rdfs:label field</li>
  * <li>this will only match text in comments${dbpedia:comment}</li>
@@ -62,11 +62,16 @@ public class Query {
 
 	// static final String ENDPOINT_LOD_FACETS = "http://dbpedia-live.openlinksw.com/fct/service";
 	static final String ENDPOINT_LOD_FACETS = "http://lod.openlinksw.com/fct/service";
-	// static final String ENDPOINT_MY_FACETS = "http://nevisian.dyndns.org/fct/service";
-	static final String ENDPOINT_MY_FACETS = "http://localhost:8890/fct/service";
-	static final String ENDPOINT_UPDATES = "http://localhost:8890/sparql";
+	// static final String ENDPOINT_LOD_FACETS = "http://myopenlink.net/fct/service";
+	// static final String ENDPOINT_MY_FACETS =
+	// "http://nevisian.dyndns.org/fct/service";
+	static final String ENDPOINT_MY_FACETS = "http://myopenlink.net/fct/service";
+	static final String ENDPOINT_UPDATES = "http://myopenlink.net/sparql";
 	static String NS_OPENLINK_FACETS = "http://openlinksw.com/services/facets/1.0";
-	View view = null; // a query has at most one view, but a view can be associated with the Query or one of its Criteria, hold the view here and link to owner by their hasView field
+	View view = null; // a query has at most one view, but a view can be
+						// associated with the Query or one of its Criteria,
+						// hold the view here and link to owner by their hasView
+						// field
 	boolean hasView = false;
 	boolean isIriList = false; // does this Query represent a list of IRIs?
 	List iriList = new ArrayList();
@@ -156,7 +161,7 @@ public class Query {
 		this.timeout = timeout;
 	}
 
-	public static Object[] toQuery(String path, String datatype, String webid) {
+	public static Object[] parse(String path, String datatype, String webid) {
 
 		// SentenceTokenizer st = new SentenceTokenizer(path,
 		// DELIMITER_IRI_START + DELIMITER_IRI_END);
@@ -166,31 +171,31 @@ public class Query {
 
 		try {
 			URI uri = new URI(path); // is valid IRI syntax?
-			if (uri.getHost() != null && uri.getScheme() != null)
-				return toQuery(path, "", iriRootHasFocus, datatype, webid);
+			if (uri.getHost() != null && uri.getScheme() != null) return parse(path, "", iriRootHasFocus, datatype, webid);
 		}
 		catch (URISyntaxException uriex) {
 			// continue to attempt to parse the IRI
 		}
 
-		// first, if the DELIMIT_FOCUS was assigned to a IRI subject, remove it for parsing purposes
+		// first, if the DELIMIT_FOCUS was assigned to a IRI subject, remove it
+		// for parsing purposes
 		// then inform toQuery() through parameter
 		if (path.indexOf(DELIMITER_FOCUS + DELIMITER_IRI_START) == 0) {
 			path = path.substring(1);
 			iriRootHasFocus = true;
 		}
 		if (path.indexOf(DELIMITER_IRI_START) != 0) {
-			return toQuery(null, path, iriRootHasFocus, datatype, webid);
+			return parse(null, path, iriRootHasFocus, datatype, webid);
 		}
 		else {
 			// path spans from index after first start-delimit, to index after
 			// first end-delimit
 			// the path will be the remainder of the string, make path null-safe
-			return toQuery(path.substring(1, path.indexOf(DELIMITER_IRI_END)), (path.indexOf(DELIMITER_IRI_END) == path.length() - 1) ? "" : path.substring(path.indexOf(DELIMITER_IRI_END) + 1), iriRootHasFocus, datatype, webid);
+			return parse(path.substring(1, path.indexOf(DELIMITER_IRI_END)), (path.indexOf(DELIMITER_IRI_END) == path.length() - 1) ? "" : path.substring(path.indexOf(DELIMITER_IRI_END) + 1), iriRootHasFocus, datatype, webid);
 		}
 	}
 
-	public static Object[] toQuery(String iri, String path, boolean iriRootHasFocus, String datatype, String webid) {
+	public static Object[] parse(String iri, String path, boolean iriRootHasFocus, String datatype, String webid) {
 		Object[] ret = new Object[3];
 		Query q = new Query(ENDPOINT_LOD_FACETS);
 		StringTokenizer st = new StringTokenizer(path, DELIMITER_NODE);
@@ -212,15 +217,19 @@ public class Query {
 			q.setHasView(iriRootHasFocus);
 		}
 
-		// if iri=null, then there is no value bound to the subject (the first node in the path), then
-		// assume that the entire path was passed as the 'path' argument of this method, and that that the first node is the text for this path
-		// note: if the path stared with {http://some.uri.here}, then it was stripped and passed as the iri argument of this method
+		// if iri=null, then there is no value bound to the subject (the first
+		// node in the path), then
+		// assume that the entire path was passed as the 'path' argument of this
+		// method, and that that the first node is the text for this path
+		// note: if the path stared with {http://some.uri.here}, then it was
+		// stripped and passed as the iri argument of this method
 		// and the suffix was passed as path
 		else {
 			String root = st.nextToken();
 			root = root.trim();
 
-			// TODO: these next two blocks don't support qname syntax for uris, but it should
+			// TODO: these next two blocks don't support qname syntax for uris,
+			// but it should
 			// check if a iri is bound to the root
 			// strip any iri values from root before processing
 			// iri can only come after the EQ operand, never before!
@@ -234,13 +243,17 @@ public class Query {
 					q.setValue(value);
 					root = root.substring(0, root.indexOf(Query.DELIMITER_EQ));
 
-					ret[1] = propIri; // for the purpose of the UI, a text restriction counts as a property unless overriden by a subsequent property
+					ret[1] = propIri; // for the purpose of the UI, a text
+										// restriction counts as a property
+										// unless overriden by a subsequent
+										// property
 				}
 			}
 
 			String only_text_uri = null;
 			// processing the DELIMIT ONLY TEXT is like processing EQ
-			// strip out the iri and save it for later after the Text object is created
+			// strip out the iri and save it for later after the Text object is
+			// created
 			// remove the iri from the root
 			if (root.indexOf(DELIMITER_ONLY_TEXT) > 0) {
 				// start delimit for uri must follow the eq delimit
@@ -248,17 +261,22 @@ public class Query {
 					only_text_uri = root.substring(root.indexOf(Query.DELIMITER_IRI_START) + 1, root.length() - 1);
 					root = root.substring(0, root.indexOf(Query.DELIMITER_ONLY_TEXT));
 
-					ret[1] = only_text_uri; // for the purpose of the UI, a text restriction counts as a property unless overriden by a subsequent property
+					ret[1] = only_text_uri; // for the purpose of the UI, a text
+											// restriction counts as a property
+											// unless overriden by a subsequent
+											// property
 				}
 			}
 
 			Text t = new Text();
 			// set text after root was checked and appropriately stripped
 			q.setText(t);
-			q.getText().setRestrictToLabels(true); // search all text fields by default
+			q.getText().setRestrictToLabels(true); // search all text fields by
+													// default
 
 			while (root.startsWith(DELIMITER_FOCUS) || root.startsWith(DELIMITER_ALL_TEXT)) {
-				// check if root node was given explicit focus, otherwise, last node
+				// check if root node was given explicit focus, otherwise, last
+				// node
 				// gets focus
 				if (root.startsWith(DELIMITER_FOCUS)) {
 					root = root.substring(1); // remove DELIMIT_FOCUS operand
@@ -267,17 +285,21 @@ public class Query {
 
 				// check if rdfs:label restriction on root was removed
 				// if not, restrict text to rdfs:label by default
-				// perform after instaintiating the Text object above so that we can
+				// perform after instaintiating the Text object above so that we
+				// can
 				// access the restricted flag, but before setting the text
 
-				// let DELIMIT_ONLY_TEXT override DELIMIT_ALL_TEXT since it occurs after
+				// let DELIMIT_ONLY_TEXT override DELIMIT_ALL_TEXT since it
+				// occurs after
 				if (root.startsWith(DELIMITER_ALL_TEXT)) {
 					root = root.substring(1); // remove operand
-					q.getText().setRestrictToLabels(false); // restrict filter to rdfs:label
+					q.getText().setRestrictToLabels(false); // restrict filter
+															// to rdfs:label
 				}
 			}
 
-			// let DELIMIT_ONLY_TEXT override DELIMIT_ALL_TEXT since it occurs after
+			// let DELIMIT_ONLY_TEXT override DELIMIT_ALL_TEXT since it occurs
+			// after
 			// therefore this check occurs after the ALL_TEXT restriction is set
 			if (only_text_uri != null) {
 				StringTokenizer prop = new StringTokenizer(only_text_uri, DELIMITER_QNAME);
@@ -292,7 +314,8 @@ public class Query {
 				else {
 					t.setPropertyIri(only_text_uri);
 				}
-				t.setRestrictToLabels(false); // turn off the label restriction also
+				t.setRestrictToLabels(false); // turn off the label restriction
+												// also
 			}
 
 			// finally, set the text of the Text object to the scrubbed 'root'
@@ -362,7 +385,8 @@ public class Query {
 					nodeValue.setDatatype(Value.DATATYPE_URI);
 				}
 				else {
-					nodeValue.setDatatype(datatype); // set datatype to the value specified
+					nodeValue.setDatatype(datatype); // set datatype to the
+														// value specified
 					nodeValue.setContent(value);
 				}
 				c.setValue(nodeValue);
@@ -392,14 +416,19 @@ public class Query {
 			targetList.add(c);
 
 			// remember the last none-bound property in the path
-			// overwrite the previous stored value with the latest occurring non-bound property node
+			// overwrite the previous stored value with the latest occurring
+			// non-bound property node
 			if (!isBound) {
 				ret[1] = c;
 
-				// nest each node in the path by passing the parent Criteria to the next iteration
-				// but only in the case of a non-bound node, nodes that bound values are not
-				// directional path nodes, they don't point forward, instead, such a node sets a restriction
-				// on the node before it; so keep this next line inside this !isBound condition
+				// nest each node in the path by passing the parent Criteria to
+				// the next iteration
+				// but only in the case of a non-bound node, nodes that bound
+				// values are not
+				// directional path nodes, they don't point forward, instead,
+				// such a node sets a restriction
+				// on the node before it; so keep this next line inside this
+				// !isBound condition
 				targetList = c.getCriteriaList();
 			}
 			// remember last property node

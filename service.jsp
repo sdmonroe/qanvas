@@ -1,6 +1,4 @@
-<%
-	
-	String path = request.getParameter("path");
+<%String path = request.getParameter("path");
 	String viewType = request.getParameter("viewType");
 	String offset = request.getParameter("offset");
 	String limit = request.getParameter("limit");
@@ -26,9 +24,7 @@
 	cv.setAppend(append != null);
 	if(path != null && path.length() > 0){
 		response.setContentType("text/xml");
-		String resolver = org.qanvas.GGGPathResolver.getViewData(cv, webid);
+		String resolver = org.qanvas.G3PathResolver.getViewData(cv, webid);
 		out.write(resolver);
 		return;
-	}
-
-%>
+	}%>

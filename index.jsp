@@ -22,8 +22,8 @@
 	<!-- load photo gallery -->
 	<script src="galleria/galleria-1.2.4.js"></script>
 	<script src="galleria/galleria-1.2.4.min.js"></script>
-<!--	<script src="galleria/themes/classic/galleria.classic.min.js"></script>
-	<link rel="stylesheet" href="galleria/themes/galleria.classic.css">-->
+<!---->	<script src="galleria/themes/classic/galleria.classic.min.js"></script>
+	<link rel="stylesheet" href="galleria/themes/galleria.classic.css">
 	
 	<!-- load div slide to close animator -->
 		<script type='text/javascript' src='js/jquery.maps.js'></script>	</head> 
@@ -57,13 +57,13 @@
 			//text.innerHTML = "hello";
 			OAT.QuickEdit.assign(text, OAT.QuickEdit.STRING);
 			
-				var q = "limit=25&offset=0&viewType=list";
-				document.getElementById('path').value = "me";
-				var params = getFormParams();
+			//	var q = "limit=25&offset=0&viewType=list";
+			//	document.getElementById('path').value = "me";
+			//	var params = getFormParams();
 				// remove text from input box after pulling it into params, but before making the ajax call
 				// this allows user to continue typing without having their text erased after the ajax call is complete
-				document.getElementById('path').value = "";
-				jQuery.get(baseUrl + "?" + q, params, loadView, 'xml');
+			//	document.getElementById('path').value = "";
+			//	jQuery.get(baseUrl + "?" + q, params, loadView, 'xml');
 		}
 	</script>
 	<script type="text/javascript" src="js/oat/loader.js"></script>

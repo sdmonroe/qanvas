@@ -1,8 +1,8 @@
 	var dock;
 	var dock_index = 0;
 	
-	var title_color = "white";
-	var view_color = "#008C00"; //"#3F4C6B";
+	var title_color = "#356AA0"; // "white";
+	var view_color = "99ccff";//"#008C00"; //"#3F4C6B";
 	
 	var gd;
 	
